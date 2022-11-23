@@ -1,0 +1,96 @@
+**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        
+        while(curr!=null){
+            // save next pointer 
+            ListNode nextOfCurr = curr.next;
+            
+            // reverse pointer
+            curr.next = prev;
+            
+            // move pointers to the next 2 nodes
+            prev = curr;
+            curr = nextOfCurr;
+        }
+        // head is now at prev
+        head = prev;
+        
+        return head;
+    }
+
+    public ListNode merge(ListNode head,ListNode head2){
+        ListNode dummy=new ListNode(-1);
+        ListNode curr = dummy;
+
+        ListNode p1 = head;
+        ListNode p2 = head2;
+        
+        while(p1!=null&&p2!=null){
+            ListNode nextp1 = p1.next;
+            p1.next=null;
+
+            ListNode nextp2 = p2.next;
+            p2.next=null;
+
+            curr.next=p1;
+            p1 = nextp1;
+            curr = curr.next;
+
+            curr.next = p2;
+            p2 = nextp2;
+            curr = curr.next;
+
+
+        }
+
+        if(p1==null){
+            curr.next = p2;
+        }
+        if(p2==null){
+            curr.next = p1;
+        }
+
+
+
+        return dummy;
+
+    }
+
+public ListNode middleNode(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        return slow;
+    }
+    public void reorderList(ListNode head) {
+        ListNode curr = middleNode(head);
+        ListNode head2 = curr.next;
+        curr.next=null;
+        head2=reverseList(head2);
+        head = merge(head,head2);
+
+        
+       // System.out.print(mid);
+    }
+}
