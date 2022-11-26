@@ -1,0 +1,22 @@
+class Solution {
+    public int longestOnes(int[] A, int B) {
+          //Your code goes here
+		int l=0;
+		int max_length=0;
+		int zeroc=0;
+
+		for(int i=0;i<A.length;i++){
+			if(A[i]==0) zeroc++;
+
+			while(zeroc>B){
+				if(A[l]==0){
+					zeroc--;
+				}
+				l++;
+			}
+			max_length = Math.max(max_length,i-l+1);
+		}
+
+		return max_length;
+    }
+}
