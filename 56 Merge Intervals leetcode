@@ -1,0 +1,35 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+	int n = intervals.length;
+	ArrayList<int []> ans = new ArrayList<>();
+
+	int prevStart = intervals[0][0];
+	int prevEnd = intervals[0][1];
+	
+	for(int i = 1; i < n; i++)
+	{
+		int currStart = intervals[i][0];
+		int currEnd = intervals[i][1];
+		
+		// overlapping case
+		if(currStart <= prevEnd) prevEnd = Math.max(prevEnd, currEnd);
+		else {
+			int tmp[] = new int[2];
+            tmp[0]=prevStart;
+            tmp[1]=prevEnd;
+            ans.add(tmp);
+			prevStart = currStart;
+			prevEnd = currEnd;
+
+		}
+	}
+	
+    int tmp[] = new int[2];
+    tmp[0]=prevStart;
+    tmp[1]=prevEnd;
+	ans.add(tmp);
+
+    return ans.toArray(new int[ans.size()][]);
+    }
+}
