@@ -1,0 +1,39 @@
+class Solution {
+    public int[] asteroidCollision(int[] a) {
+        Stack<Integer> st = new Stack<>();
+        int n = a.length;
+        
+        for(int i=0;i<n;i++){
+            //if the value is positive push it to stack
+            if(a[i]>0){
+                st.push(a[i]);
+            }
+                /*if it is negative there will be 3 conditions
+                1.we will check the absolute value of a[i] ans if it is greater than st.peek() && st.peek()>0
+                2.st.peek() == absolute value of a[i]
+                3.if at last the size of the stack is 0 we check if the a[i] is negative */
+            else{
+                //pop all asteroids which have less weight
+                while(st.size()>0 && st.peek()>0 && st.peek()< -1*a[i]) st.pop();                
+                //check equal weight case
+                if(st.size()>0 && st.peek()== -1*a[i]) st.pop();
+                
+                else if(st.size()>0 && st.peek()>-1*a[i]) continue;
+                //empty stack and same direction 
+                else st.push(a[i]);
+                
+            }
+        }
+        //initializing ans array
+        int ans[] = new int[st.size()];
+
+        int i=ans.length-1;
+        while(st.size()>0){
+            ans[i] = st.pop();
+            i--;
+        }
+
+        return ans;
+        
+    }
+}
