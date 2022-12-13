@@ -1,0 +1,58 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        //count total fresh oranges and initialize a queue for rotten oranges
+        int freshc = 0;
+        Queue<int []> q = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+
+        //traverse the grid and count fresh oranges
+        //at the same time insert the coordinates of rotten oranges
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1) freshc++;
+                else if(grid[i][j]==2) q.add(new int[]{i,j});
+            }
+        }
+
+        //if freshcount is 0 then return -1
+        if(freshc==0) return 0;
+
+        //initialize a direction array to check the adjacent elements
+        int d[][] = {{0,1},{1,0},{-1,0},{0,-1}};
+
+        //initialize the time 
+        int time=0;
+        while(q.size()>0){
+
+
+            int k = q.size();
+
+            for(int i=0;i<k;i++){
+
+                int cor[] = q.remove();
+                int r = cor[0];
+                int c = cor[1];
+                //System.out.println(r+" "+c);
+                for(int j=0;j<4;j++){
+                    int nx = r+d[j][0];
+                    int ny = c+d[j][1];
+
+                    if(nx>=0&&ny>=0&&nx<m&&ny<n&&grid[nx][ny]==1){
+                        freshc--;
+                        grid[nx][ny] = 2;
+                        q.add(new int[]{nx,ny});
+                    }
+
+                }
+            }
+
+
+            time++;
+        }
+        System.out.print(time);
+        if(freshc==0) return time-1;
+
+        return -1;
+    }
+}
