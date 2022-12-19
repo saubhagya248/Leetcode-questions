@@ -1,0 +1,126 @@
+
+class Node{
+	
+	int appName;
+	int state;
+	Node prev;
+	Node next;
+	
+	Node(int appName,int state){
+		this.appName=appName;
+		this.state=state;
+		next = prev = null;
+	}
+	
+}
+class LRUCache {
+    
+	Map<Integer,Node> m;
+	int size;
+    int capacity;
+	Node front,back;
+	
+    public LRUCache(int cap) {
+		
+        this.capacity=cap;
+		this.size = 0;
+		front = back = null;
+		m = new HashMap<>();
+		
+    }
+
+    public int get(int appName) {
+
+		if(m.containsKey(appName)){
+			Node nn = m.get(appName);
+			moveToFront(nn);
+			return nn.state;
+		}
+		else{
+			return -1;
+		}
+		
+    }
+
+    public void put(int appName, int state) {
+
+		if(m.containsKey(appName)){
+			Node app = m.get(appName);
+			moveToFront(app);
+			app.state = state;
+		}
+		else{
+			Node newn = new Node(appName,state);
+			addToFront(newn);
+			m.put(appName,newn);
+			size++;
+		}
+
+		if(size>capacity){
+			
+			int app = removeBack();
+			size--;
+			m.remove(app);
+			
+		}
+		
+    }
+
+	private void addToFront(Node app){
+
+		if(front == null){
+            front = back = app;
+            return;
+        }
+
+		front.next = app;
+		app.prev = front;
+
+		app.next = null;
+        front = app;
+		
+	}
+
+	private int removeBack(){
+
+        if(back == null) return -1;
+
+		int app = back.appName;
+		Node nextapp = back.next;
+
+        if(nextapp!=null)nextapp.prev = null;
+
+        back.next = null;
+        back = nextapp;
+
+		return app;
+		
+	}
+
+	private void moveToFront(Node app){
+
+			if(app == front) return;
+            
+            if(app == back) back = back.next;
+
+			Node nextofapp = app.next;
+			Node prevofapp = app.prev;
+
+			if(nextofapp!=null)nextofapp.prev = prevofapp;
+			if(prevofapp!=null)prevofapp.next = nextofapp;
+
+			front.next = app;
+			app.prev = front;
+			app.next = null;
+
+            front=app;
+		
+	}
+
+}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
