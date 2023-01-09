@@ -1,0 +1,24 @@
+	public int[] computelps(String pat){
+		int len,i,m;
+		len = 0; i = 1; m = pat.length();
+		int lps[] = new int[m];
+		lps[0] = 0;
+
+		while(i<m){
+			if(pat.charAt(i)==pat.charAt(len)){
+				len++;
+				lps[i] = len;
+				i++;
+			}
+			else{
+				if(len!=0){
+					len = lps[len-1];
+				}
+				else{
+					lps[i++] = len;
+				}
+			}
+		}
+
+		return lps;
+	}
