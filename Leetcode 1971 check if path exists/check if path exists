@@ -1,0 +1,37 @@
+class Solution {
+    boolean checkUtil(int src,int dest,ArrayList<Integer>[] graph,boolean[] visited){
+
+    if(src == dest) return true;
+    
+    visited[src] = true;
+    for(int nbr : graph[src]){
+        if(visited[nbr]==false){
+            if(checkUtil(nbr,dest,graph,visited)) return true;
+        }
+    }
+
+    return false;
+}
+
+
+
+public boolean validPath(int vertices, int[][] Edges, int src, int dest) {
+    ArrayList<Integer>[] graph = new ArrayList[vertices];
+
+    for(int i=0;i<vertices;i++) graph[i] = new ArrayList<>();
+
+    System.out.print(graph.length);
+
+    for(int e[] : Edges){
+        int u = e[0];
+        int v = e[1];
+
+        graph[u].add(v);
+        graph[v].add(u);
+    }
+
+    boolean visited[] = new boolean[vertices];
+
+    return checkUtil(src,dest,graph,visited);
+}
+}
