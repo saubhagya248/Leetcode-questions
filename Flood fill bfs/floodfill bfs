@@ -1,0 +1,41 @@
+class Solution {
+    private int[] dr = new int[]{-1,0,1,0};
+	private int[] dc = new int[]{0,1,0,-1};
+    public int[][] floodFill(int[][] image, int r, int c, int newColor) {
+        Queue<int[]> q = new LinkedList<>();
+		int rows = image.length;
+		int cols = image[0].length;
+		boolean visited[][] = new boolean[rows][cols];
+		
+		
+		q.add(new int[]{r,c});
+		visited[r][c] = true;
+
+		while(q.size()>0){
+			int size = q.size();
+			for(int i=0;i<q.size();i++){
+
+				int[] temp = q.remove();
+
+				int sr = temp[0];
+				int sc = temp[1];
+				int scolor = image[sr][sc];
+				image[sr][sc] = newColor;
+
+				for(int j=0;j<4;j++){
+					int nr = sr+dr[j];
+					int nc = sc+dc[j];
+
+					if(nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+					if(visited[nr][nc] == false && image[nr][nc] == scolor){
+						q.add(new int[]{nr,nc});
+						visited[nr][nc] = true;
+					}
+				}	
+			}
+		}
+
+
+		return image;
+    }
+}
